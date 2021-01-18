@@ -1,0 +1,21 @@
+version: '3.5'
+services:
+
+  postgres-db:
+    container_name: suplemento_database
+    image: postgres:12-alpine
+    volumes:
+      - /home/paulo/workspace/paulo/suplemento_server/database:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=1234567
+      - POSTGRES_DB=db_suplemento
+      - POSTGRES_USER=postgres
+    networks:
+      - hr-net
+    restart: unless-stopped
+
+networks:
+  hr-net:
+    driver: bridge
