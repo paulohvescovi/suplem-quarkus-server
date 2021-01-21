@@ -20,7 +20,7 @@ public class UserRolesConverter  implements AttributeConverter<List<Role>, Strin
     @Override
     public List<Role> convertToEntityAttribute(String list) {
         return Stream.of(list.split(","))
-                     .map(Role::valueOf)
-                     .collect(Collectors.toList());
+                .map(roleString -> Role.valueOf(roleString))
+                .collect(Collectors.toList());
     }
 }
