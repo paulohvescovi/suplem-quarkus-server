@@ -1,6 +1,5 @@
 package br.com.takuara.circumference;
 
-import br.com.takuara.circumferencehistory.CircumferenceHistory;
 import br.com.takuara.framework.BaseService;
 import br.com.takuara.user.User;
 

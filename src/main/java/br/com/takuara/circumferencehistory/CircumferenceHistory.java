@@ -1,7 +1,6 @@
 package br.com.takuara.circumferencehistory;
 
-import br.com.takuara.circumference.Circumference;
-import br.com.takuara.enumerations.CircumferenceFields;
+import br.com.takuara.enumeration.CircumferenceFields;
 import br.com.takuara.user.User;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import lombok.*;
@@ -27,12 +26,15 @@ public class CircumferenceHistory extends PanacheEntity implements Serializable 
 
     @Column(name = "field")
     @Enumerated(EnumType.STRING)
+    @NotNull(message = "circumference field is mandatory")
     private CircumferenceFields field;
 
     @Column(name = "value")
+    @NotNull(message = "the circumference field value is mandatory")
     private Double value;
 
     @Column(name = "date_insert")
+    @NotNull(message = "date of insert is mandatory")
     private LocalDateTime dateInsert = LocalDateTime.now();
 
 }

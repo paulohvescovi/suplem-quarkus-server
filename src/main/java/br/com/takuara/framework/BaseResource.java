@@ -1,5 +1,6 @@
 package br.com.takuara.framework;
 
+import br.com.takuara.exceptions.ResponseApiException;
 import br.com.takuara.framework.annotations.JsonResource;
 import br.com.takuara.user.User;
 import br.com.takuara.user.UserService;
@@ -45,20 +46,27 @@ public abstract class BaseResource<T extends PanacheEntity>{
 
     @PUT
     @Path("/{id}")
-    public Response update(@PathParam("id") Long id, T entity){
+    public Response update(@PathParam("id") Long id, @Valid T entity){
         return Optional.ofNullable(getService().findById(id))
                     .map(entityPersisted -> {
                         entity.id = entityPersisted.id;
-                        return save(entity);
+                        return Response
+                                .status(Response.Status.ACCEPTED)
+                                .entity(getService().save(entity))
+                                .build();
                     })
                     .orElse(Response.status(Response.Status.NOT_FOUND).build());
     }
 
     @POST
     public Response save(@Valid T entity) {
-        boolean isNewEntity = entity.id == null;
+        if (entity.id != null){
+            return Response.status(Response.Status.BAD_GATEWAY)
+                    .entity("please use PUT method for update entities")
+                    .build();
+        }
         return Response
-                .status(isNewEntity ? Response.Status.CREATED : Response.Status.ACCEPTED)
+                .status(entity.id == null ? Response.Status.CREATED : Response.Status.ACCEPTED)
                 .entity(getService().save(entity))
                 .build();
     }

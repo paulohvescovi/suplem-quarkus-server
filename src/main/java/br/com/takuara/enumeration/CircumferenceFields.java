@@ -1,6 +1,9 @@
-package br.com.takuara.enumerations;
+package br.com.takuara.enumeration;
 
-public enum CircumferenceFields {
+import javax.persistence.Column;
+import java.util.Arrays;
+
+public enum CircumferenceFields implements EnumLabel {
 
     USER_ID("user_id"),
     NECK("neck"),
@@ -25,5 +28,22 @@ public enum CircumferenceFields {
 
     public String getColumnName() {
         return columnName;
+    }
+
+    public static CircumferenceFields fromColumn(Column columnDataBase){
+        return Arrays.stream(CircumferenceFields.values())
+                .filter(f -> f.getColumnName().equals(columnDataBase.name()))
+                .findFirst()
+                .get();
+    }
+
+    @Override
+    public String getLabel() {
+        return this.columnName;
+    }
+
+    @Override
+    public String getName() {
+        return name();
     }
 }

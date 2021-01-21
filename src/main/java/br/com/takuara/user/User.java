@@ -1,6 +1,6 @@
 package br.com.takuara.user;
 
-import br.com.takuara.enumerations.Genre;
+import br.com.takuara.enumeration.Genre;
 import br.com.takuara.framework.converters.UserRolesConverter;
 import br.com.takuara.framework.security.Role;
 import br.com.takuara.utils.DateUtils;

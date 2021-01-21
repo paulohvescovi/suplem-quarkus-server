@@ -1,6 +1,6 @@
 package br.com.takuara.framework.security;
 
-import br.com.takuara.enumerations.EnumLabel;
+import br.com.takuara.enumeration.EnumLabel;
 
 public enum Role implements EnumLabel {
 
@@ -19,6 +19,12 @@ public enum Role implements EnumLabel {
 	public String getLabel() {
 		return label;
 	}
+
+	@Override
+	public String getName() {
+		return name();
+	}
+
 
 	public int getPriotiry() {
 		return priotiry;

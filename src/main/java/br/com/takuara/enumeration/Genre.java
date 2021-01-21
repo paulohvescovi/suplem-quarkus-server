@@ -1,4 +1,7 @@
-package br.com.takuara.enumerations;
+package br.com.takuara.enumeration;
+
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public enum Genre implements EnumLabel {
 
@@ -16,4 +19,11 @@ public enum Genre implements EnumLabel {
     public String getLabel() {
         return this.label;
     }
+
+    @Override
+    public String getName() {
+        return name();
+    }
+
+
 }
