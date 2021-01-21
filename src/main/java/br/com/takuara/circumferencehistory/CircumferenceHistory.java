@@ -1,5 +1,6 @@
-package br.com.takuara.circumference;
+package br.com.takuara.circumferencehistory;
 
+import br.com.takuara.circumference.Circumference;
 import br.com.takuara.user.User;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import lombok.*;
@@ -7,6 +8,8 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
@@ -14,16 +17,13 @@ import java.io.Serializable;
 @Builder
 @EqualsAndHashCode(of = {"id"}, callSuper = false)
 @Entity
-@Table(name = "cincumferences")
-public class Circumference extends PanacheEntity implements Serializable {
+@Table(name = "cincumferences_history")
+public class CircumferenceHistory extends PanacheEntity implements Serializable {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")
     @NotNull(message = "User is mandatory")
     private User user;
-
-    @Column(name = "neck")
-    private Double neck;
 
     @Column(name = "shoulder")
     private Double shoulder;
@@ -60,5 +60,8 @@ public class Circumference extends PanacheEntity implements Serializable {
 
     @Column(name = "right_Calf")
     private Double rightCalf;
+
+    @Column(name = "date_insert")
+    private LocalDateTime dateInsert = LocalDateTime.now();
 
 }

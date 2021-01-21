@@ -1,19 +1,34 @@
 package br.com.takuara.framework;
 
 import br.com.takuara.framework.annotations.JsonResource;
+import br.com.takuara.user.User;
+import br.com.takuara.user.UserService;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import javax.annotation.security.RolesAllowed;
+import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 import java.util.Optional;
 
 @JsonResource
 @RolesAllowed({"USER", "ADMIN"})
 public abstract class BaseResource<T extends PanacheEntity>{
 
+    @Context protected SecurityContext securityContext;
+
+    @Inject protected JsonWebToken jwt;
+    @Inject protected UserService userService;
+
     protected abstract BaseService<T> getService();
+
+    protected User getAuthenticatedUser(){
+        return userService.findByEmail(securityContext.getUserPrincipal().getName());
+    }
 
     @GET
     public Response findAll(){

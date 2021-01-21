@@ -22,7 +22,7 @@ import java.util.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@EqualsAndHashCode(of = {"email"}, callSuper = false)
+@EqualsAndHashCode(of = {"email"}, callSuper = true)
 public class User extends PanacheEntity implements Serializable {
 
     @Email(message = "Invalid email")
@@ -60,6 +60,5 @@ public class User extends PanacheEntity implements Serializable {
                 ? DateUtils.yearsBetween(birthDate, LocalDate.now())
                 : null;
     }
-
 
 }

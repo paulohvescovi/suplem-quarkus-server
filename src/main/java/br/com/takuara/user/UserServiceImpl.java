@@ -2,10 +2,12 @@ package br.com.takuara.user;
 
 import br.com.takuara.framework.BaseServiceImpl;
 import br.com.takuara.framework.security.PBKDF2Encoder;
+import br.com.takuara.framework.security.Role;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.Comparator;
 
 @ApplicationScoped
 public class UserServiceImpl extends BaseServiceImpl<User> implements UserService {
@@ -16,6 +18,24 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     @Override
     protected PanacheRepository<User> getRepository() {
         return userRepository;
+    }
+
+    @Override
+    public Role getMainRole(User user) {
+        return user.getRoles().stream()
+                .sorted(Comparator.comparingInt(Role::getPriotiry))
+                .findFirst()
+                .get();
+    }
+
+    @Override
+    public boolean isAdmin(User user) {
+        return Role.ADMIN.equals(
+                user.getRoles().stream()
+                        .sorted(Comparator.comparingInt(Role::getPriotiry))
+                        .findFirst()
+                        .get()
+        );
     }
 
     @Override
