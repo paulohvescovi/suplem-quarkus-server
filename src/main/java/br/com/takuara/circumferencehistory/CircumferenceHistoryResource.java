@@ -5,10 +5,11 @@ import br.com.takuara.framework.BaseService;
 import br.com.takuara.framework.annotations.JsonResource;
 
 import javax.inject.Inject;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 
-@Path("circunferens")
+@Path("circunferens/history")
 @JsonResource
 public class CircumferenceHistoryResource extends BaseResource<CircumferenceHistory> {
 
@@ -20,7 +21,7 @@ public class CircumferenceHistoryResource extends BaseResource<CircumferenceHist
     }
 
     @Override
-    //todo nao sei pq o find all chama do pai e nao desse aqui
+    @GET
     public Response findAll() {
         return Response.ok(circumferenceHistoryService.findAll(getAuthenticatedUser())).build();
     }

@@ -58,7 +58,7 @@ public class Circumference extends PanacheEntity implements Serializable {
     @Column(name = "left_calf")
     private Double leftCalf;
 
-    @Column(name = "right_Calf")
+    @Column(name = "right_calf")
     private Double rightCalf;
 
 }
