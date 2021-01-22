@@ -1,5 +1,6 @@
 package br.com.takuara.circumferencehistory;
 
+import br.com.takuara.enumeration.CircumferenceFields;
 import br.com.takuara.framework.BaseService;
 import br.com.takuara.user.User;
 
@@ -10,4 +11,5 @@ public interface CircumferenceHistoryService extends BaseService<CircumferenceHi
 
     List<CircumferenceHistory> findAll(@NotNull User user);
 
+    List<CircumferenceHistory> findByUserAndField(User authenticatedUser, CircumferenceFields field);
 }

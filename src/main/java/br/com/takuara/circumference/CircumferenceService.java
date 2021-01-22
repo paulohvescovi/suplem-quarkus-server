@@ -9,5 +9,6 @@ import java.util.List;
 public interface CircumferenceService extends BaseService<Circumference> {
 
     List<Circumference> findAll(@NotNull User user);
+    Circumference findByUser(@NotNull User user);
 
 }

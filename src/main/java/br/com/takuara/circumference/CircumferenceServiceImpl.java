@@ -43,9 +43,14 @@ public class CircumferenceServiceImpl extends BaseServiceImpl<Circumference> imp
     }
 
     @Override
+    public Circumference findByUser(@NotNull User user) {
+        return circumferenceRepository.findByUser(user);
+    }
+
+    @Override
     public Circumference preProcessorSave(Circumference entity) {
         if (entity.id != null){
-            List<CircumferenceHistory> historyList = getHistoryForSave(entity);
+            List<CircumferenceHistory> historyList = getHistoryForSave(findById(entity.id));
             if (isNotEmpty(historyList)){
                 historyList.forEach(history -> circumferenceHistoryService.save(history));
             }
@@ -56,7 +61,7 @@ public class CircumferenceServiceImpl extends BaseServiceImpl<Circumference> imp
     private Double getDouble(Field field, Circumference entity){
         try {
             field.setAccessible(true);
-            return (Double)field.get(entity);
+            return (Double) field.get(entity);
         } catch (IllegalAccessException e) {
             return null;
         }
