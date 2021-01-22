@@ -7,6 +7,7 @@ import br.com.takuara.framework.BaseServiceImpl;
 import br.com.takuara.framework.security.Role;
 import br.com.takuara.user.User;
 import br.com.takuara.user.UserService;
+import br.com.takuara.utils.ReflectionUtils;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -55,27 +56,22 @@ public class CircumferenceServiceImpl extends BaseServiceImpl<CircumferenceHisto
     private CircumferenceHistory getCurrentValueFromField(User user, CircumferenceFields circumferenceField){
         Circumference currentCircunference = circumferenceService.findByUser(user);
 
-        //todo refactor this method
         return Arrays.stream(currentCircunference.getClass().getDeclaredFields())
                 .filter(field -> field.isAnnotationPresent(Column.class))
                 .filter(field -> field.getAnnotation(Column.class).name().equals(circumferenceField.getColumnName()))
                 .findFirst()
                 .map(fieldValue -> {
-                    fieldValue.setAccessible(true);
-                    try {
-                        Double value = (Double) fieldValue.get(currentCircunference);
-                        if (value == null){
-                            return null;
-                        }
-                        return CircumferenceHistory.builder()
-                                .user(user)
-                                .dateInsert(LocalDateTime.now())
-                                .field(circumferenceField)
-                                .value(value)
-                                .build();
-                    } catch (IllegalAccessException e) {
+                    Double value = ReflectionUtils.getDouble(fieldValue, currentCircunference);
+                    if (value == null){
                         return null;
                     }
+                    return CircumferenceHistory.builder()
+                            .user(user)
+                            .dateInsert(LocalDateTime.now())
+                            .field(circumferenceField)
+                            .value(value)
+                            .build();
+
                 })
                 .orElse(null);
 

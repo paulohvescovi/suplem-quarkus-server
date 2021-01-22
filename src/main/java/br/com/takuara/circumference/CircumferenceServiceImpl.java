@@ -6,6 +6,7 @@ import br.com.takuara.enumeration.CircumferenceFields;
 import br.com.takuara.framework.BaseServiceImpl;
 import br.com.takuara.user.User;
 import br.com.takuara.user.UserService;
+import br.com.takuara.utils.ReflectionUtils;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -58,28 +59,19 @@ public class CircumferenceServiceImpl extends BaseServiceImpl<Circumference> imp
         return super.preProcessorSave(entity);
     }
 
-    private Double getDouble(Field field, Circumference entity){
-        try {
-            field.setAccessible(true);
-            return (Double) field.get(entity);
-        } catch (IllegalAccessException e) {
-            return null;
-        }
-    }
-
     private List<CircumferenceHistory> getHistoryForSave(Circumference entity){
         List<CircumferenceHistory> forSave = new ArrayList<>();
 
         Arrays.stream(entity.getClass().getDeclaredFields())
                 .filter(field -> field.isAnnotationPresent(Column.class))
                 .filter(field -> !field.getAnnotation(Column.class).name().equals(CircumferenceFields.USER_ID.getLabel()))
-                .filter(field -> getDouble(field, entity) != null)
+                .filter(field -> ReflectionUtils.getDouble(field, entity) != null)
                 .forEach(field -> {
                     forSave.add(CircumferenceHistory.builder()
                             .dateInsert(LocalDateTime.now())
                             .user(entity.getUser())
                             .field(CircumferenceFields.fromColumn(field.getAnnotation(Column.class)))
-                            .value(getDouble(field, entity))
+                            .value(ReflectionUtils.getDouble(field, entity))
                             .build()
                     );
                 });
